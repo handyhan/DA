@@ -3,7 +3,7 @@ import numpy as np
 
 v = 2 # number of met variables
 N = 6 # resolution of model grid
-b=0.4 # probability to be on fire
+b=0.3 # probability to be on fire
 mod_grid=N**2
 x = np.random.choice([0, 1], size=mod_grid, p=[1-b, b])
 x = x.reshape((N,N))
@@ -45,6 +45,18 @@ def h_x_op(x):
 h_x_op(x)
 
 timesteps = 20
+x_same = 0.9 # probability with which each x_i stay the same
+
+def gen_obs(no_obs,x_same): # number of observations and the probability of each variable staying the same
+    x=x.flatten()
+    for i in range(timesteps):
+        for i in range(len(x)):
+            x[i] = x[i]*(np.random.choice(np.arange(0,2),p=[1-x_same,x_same]))
+
+        x=x.reshape((N,N))
+        return x
+
+
 
 def simple_B_Matrix():
     B = np.diag(np.ones(shape =mod_grid))
