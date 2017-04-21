@@ -6,6 +6,7 @@ N = 6 # resolution of model grid
 b=0.4 # probability to be on fire
 mod_grid=N**2
 x = np.random.choice([0, 1], size=mod_grid, p=[1-b, b])
+x = x.reshape((N,N))
 
 def blockshaped(arr, nrows, ncols):
     """
@@ -34,13 +35,16 @@ def h_x_op(x):
     H_x_MOD = blockshaped(x,(P_m),(P_m))
     H_x_geo = blockshaped(x,(P_g),(P_g))
 
+    print H_x_MOD
     H_x_MOD = np.sum(H_x_MOD,axis=(1,2))
     H_x_geo = np.sum(H_x_geo,axis=(1,2))
 
     print H_x_MOD,H_x_geo
 
+
 h_x_op(x)
 
 timesteps = 20
-B = np.diag(np.ones(shape =mod_grid))
-print B
+
+def simple_B_Matrix():
+    B = np.diag(np.ones(shape =mod_grid))
